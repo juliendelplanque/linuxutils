@@ -18,9 +18,11 @@
 from gi.repository import Notify
 from datetime import datetime
 from datetime import timedelta
+import time
 
 GREETING = "Hi master,"
 SAY_GOODBYE = "Sincerly,\nYour Operating System"
+SLEEP_TIME = 3600 # 1h
 
 def message_and_urgency(difference: timedelta):
     """ Return a string containing a message and an Urgency according to the
@@ -60,12 +62,18 @@ def last_backup_datetime():
 def main():
     """ Main function of this program.
     """
-    difference = datetime.today() - last_backup_datetime()
+    first_iteration = True
     Notify.init("Backup notifier")
-    message, urgency = message_and_urgency(difference)
-    notification = Notify.Notification.new("Backup notifier", message)
-    notification.set_urgency(urgency)
-    notification.show()
+    notification = Notify.Notification()
+    while True:
+      difference = datetime.today() - last_backup_datetime()
+      if first_iteration or difference >= timedelta(hours=24):
+          message, urgency = message_and_urgency(difference)
+          notification.update("Backup notifier", message)
+          notification.set_urgency(urgency)
+          notification.show()
+          first_iteration = False
+      time.sleep(SLEEP_TIME)
 
 if __name__ == '__main__':
     main()
