@@ -4,7 +4,7 @@
     shell.
 
     The only thing this script requiere is a text file containing the last
-    backup date as the last line, located in /etc and named last_backups.
+    backup date as the last line, located in /var/log and named last_backup.
     Obviously the file has to be readable for the user who want to use this
     script.
 
@@ -52,10 +52,10 @@ def message_and_urgency(difference: timedelta):
     return message + "\n\n"+SAY_GOODBYE, urgency
 
 def last_backup_datetime():
-    """ Read the file /etc/last_backups and return the date of the last backup
+    """ Read the file /var/log/last_backup and return the date of the last backup
         (last line) as a datetime object.
     """
-    with open("/etc/last_backups", "r") as backup_log_file:
+    with open("/var/log/last_backup", "r") as backup_log_file:
         string_date = backup_log_file.readlines()[-1]
         return datetime.strptime(string_date, "%d/%m/%Y-%H:%M:%S\n")
 
