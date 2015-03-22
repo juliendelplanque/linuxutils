@@ -1,4 +1,5 @@
-#!/bin/python3
+#!/bin/env python3
+# -*- encoding: utf-8 -*-
 """ Script to remember you to do your backups.
     This program use python-gtk to send notifications to the user's gnome
     shell.
